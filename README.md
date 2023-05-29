@@ -71,4 +71,4 @@ The aim of our search is to bring together a diverse group of individuals who sh
 - Implement forum
 
 # Google Drive Folder
-
+Here you can find our poster and video as well as other pertinent files. [https://drive.google.com/drive/folders/1pP2DYJNuM605Ki6p7UJCCHxepzkqcKwk?usp=drive_link]
