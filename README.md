@@ -1,5 +1,4 @@
-# Team/Project Name
-OpenJIO
+# OpenJIO
 
 # Overview
 OpenJIO is a mobile app developed using the React Native framework. It allows users to plan and engage in a multitude of activities in local Singapore.
