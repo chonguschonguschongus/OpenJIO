@@ -1,8 +1,13 @@
-import { View, Text, Image, TextInput } from "react-native";
+import { TouchableOpacity, View, Text, Image, TextInput } from "react-native";
 
-import { COLORS, FONTS, SIZES, assets } from "../constants";
+import { COLORS, FONTS, SIZES, assets, SHADOWS} from "../constants";
+import { useNavigation } from "@react-navigation/native";
+import { CircleButton } from "./Button";
 
 const HomeHeader = ({ onSearch }) => {
+
+  const navigation = useNavigation();
+
   return (
     <View
       style={{
@@ -24,24 +29,13 @@ const HomeHeader = ({ onSearch }) => {
         />
 
         <View style={{ width: 45, height: 45 }}>
-          <Image
-            source={assets.person01}
-            resizeMethod="contain"
-            style={{ width: "100%", height: "100%" }}
-          />
-          <Image
-            source={assets.badge}
-            resizeMethod="contain"
-            style={{
-              position: "absolute",
-              width: 15,
-              height: 15,
-              bottom: 0,
-              right: 0,
-            }}
+          <CircleButton
+            imgUrl={assets.person01}
+            handlePress={() => navigation.replace("UserProfile")}
           />
         </View>
       </View>
+      
       <View style={{ marginVertical: SIZES.font }}>
         <Text
           style={{
