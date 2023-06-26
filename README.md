@@ -59,12 +59,15 @@ The aim of our search is to bring together a diverse group of individuals who sh
 26 June 2023 - Evaluation Milestone 2: 
 - User authentication
 - Creation of OpenJIOs
-- Chat and Accepting of OpenJIOs
+- Chat and Accepting of OpenJIOs [DELAYED]
+- Edit Profile [DONE but navigation issue]
 
 24 July 2023 - Evaluation Milestone 3: 
-- For You Page of OpenJIOs
-- Algorithmic recommendation of OpenJIOs
+- For You Page of OpenJIOs [REMOVED]
+- Algorithmic recommendation of OpenJIOs [REMOVED]
 - Rating systems
+- Favourites
+- Edit Profile
 
 24 Aug 2023 - Splashdown:
 - Polish up the system
