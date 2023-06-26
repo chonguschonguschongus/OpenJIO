@@ -20,7 +20,7 @@ const EventCard = ({ data }) => {
     >
       <View style={{ width: "100%", height: 250 }}>
         <Image
-          source={data.image}
+          source={{ uri: data.image }}
           resizeMode="cover"
           style={{
             width: "100%",

@@ -29,6 +29,25 @@ export const CircleButton = ({
   );
 };
 
+export const BarButton = ({ imgUrl, handlePress, ...props }) => {
+  const { isSelected = false } = props;
+
+  const containerStyles = {
+    borderWidth: 1,
+    borderColor: isSelected ? "dodgerblue" : "grey",
+  };
+
+  return (
+    <TouchableOpacity onPress={handlePress}>
+      <Image
+        style={{ width: 40, height: 40 }}
+        source={imgUrl}
+        resizeMode="contain"
+      />
+    </TouchableOpacity>
+  );
+};
+
 export const RectButton = ({
   text,
   minWidth,

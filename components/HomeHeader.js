@@ -31,7 +31,7 @@ const HomeHeader = ({ onSearch }) => {
         <View style={{ width: 45, height: 45 }}>
           <CircleButton
             imgUrl={assets.person01}
-            handlePress={() => navigation.replace("UserProfile")}
+            handlePress={() => navigation.navigate("UserProfile")}
           />
         </View>
       </View>

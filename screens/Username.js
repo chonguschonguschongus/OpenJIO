@@ -1,55 +1,43 @@
 import React, { useEffect, useState } from "react";
-import { useNavigation } from "@react-navigation/native";
+import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import {  View, TextInput, Image, Text, SafeAreaView} from "react-native";
 
 import { assets, FONTS, COLORS, SIZES } from "../constants";
 import { RectButton } from "../components";
 import { db, auth } from "../firebase";
 import { TransButton } from "../components/Button";
-import { collection, doc, getDocs, updateDoc, addDoc} from "firebase/firestore"
+import { collection, doc, getDoc, updateDoc, addDoc} from "firebase/firestore"
 
 const UserProfile = () => {
 
   const navigation = useNavigation();
-  const [email, setEmail] = useState('')
   const [username, setUsername] = useState('')
-  const [Users, setUsers] = useState( [] )
-  const usersCollectionRef = collection(db, "Users");
-  
-  function create() {
-    addDoc(collection (db, "Users"), {
-      username : username,
-      email : auth.currentUser.email,
-    }). then(() => {
-      console.log ('data submitted');
-    }).catch((error) => {
-      console.log(error);
-    });;
-  }
+  const currentUser = auth.currentUser;
 
-  useEffect(() => {
-    const getUsers = async () => {
-      try {
-        const querySnapshot = await getDocs(usersCollectionRef);
-        const fetchedUsers = querySnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        setUsers(fetchedUsers);
-      } catch (error) {
-        console.log(error);
+  const updateUser = async () => {
+    try {
+      if (!currentUser) {
+        console.log("No user logged in.");
+        return;
       }
-    };
 
-    getUsers();
-  }, []);
+      const userDocRef = doc(db, "Users", currentUser.uid);
+      const userDocSnapshot = await getDoc(userDocRef);
 
-  const handleSignOut = () => {
-    auth
-      .signOut()
-      .then(() => navigation.replace("LoginPage"))
-      .catch(error => alert(error.message))
-  }
+      if (userDocSnapshot.exists()) {
+        await updateDoc(userDocRef, {
+          username: username,
+        });
+        console.log("Document updated successfully");
+      } else {
+        console.log("User document does not exist");
+      }
+    } catch (error) {
+      console.log("Error updating document:", error);
+    } finally {
+      navigation.navigate("UserProfile");
+    }
+  };
 
   return (
     <SafeAreaView
@@ -58,47 +46,30 @@ const UserProfile = () => {
 
       <Image source={assets.newlogo} style={styles.logo} />
 
-      <View>
-      {Users.map((item) => {
-      // Check if the item's ID matches the ID of the current user
-      if (item.id === auth.currentUser.uid) {
-        return (
-          <View key={item.id}>
-            <Text style={styles.text}>{item.username}</Text>
-          </View>
-        );
-      } else {
-        return null;
-      }
-     })}
-      </View>
+      <Text style={styles.h2}>User Name</Text>
         
       <View style={styles.loginForm}>
+        <View style={styles.username}>
+          <TextInput
+            placeholder="New Username"
+            autoCorrect={false}
+            value = {username}
+            onChangeText = {text => setUsername(text)}
+            style={styles.control}
+          />
+          <View id="spinner" style={styles.spinner}></View>
+        </View>
+
         <View style={[styles.bars]}>
           <View style={styles.bar}></View>
         </View>
-        <RectButton
-          text={"Username"}
-          minWidth={150}
-          fontSize={SIZES.large}
-          handlePress={() => navigation.navigate("Username")}
-        />
-
       </View>
 
       <RectButton
-          text={"Create"}
-          minWidth={150}
-          fontSize={SIZES.large}
-          handlePress={() => navigation.navigate("Create")}
-        />
-      
-  
-      <TransButton
-       text={"Sign Out"}
-       minWidth={0}
-      fontSize={SIZES.large}
-       handlePress={handleSignOut} // Pass the item.id and username variables
+        text={"Confirm"}
+        minWidth={0}
+        fontSize={SIZES.large}
+        handlePress={() => updateUser(username)}
       />
 
     </SafeAreaView>
@@ -117,8 +88,8 @@ const styles = {
     transitionDuration: 0.4,
   },
   logo: {
-    width: 150,
-    height: 150,
+    width: 100,
+    height: 100,
     borderRadius: 130,
     borderWidth: 1,
     borderColor: "rgba(255, 255, 255, 255)",

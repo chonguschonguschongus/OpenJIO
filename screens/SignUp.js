@@ -6,6 +6,7 @@ import { assets, FONTS, COLORS, SIZES } from "../constants";
 import { RectButton } from "../components";
 import { db, auth } from "../firebase";
 import { TransButton } from "../components/Button";
+import { collection, doc, setDoc, addDoc} from "firebase/firestore"
 
 const strengthLabels = ["weak", "medium", "strong"];
 
@@ -45,7 +46,23 @@ const SignUp= () => {
   const handleChange = (text) => {
     getStrength(text);
   };
-
+  
+  function create() {
+    const userDocRef = doc(db, "Users", auth.currentUser.uid);
+  
+    setDoc(userDocRef, {
+      username: username,
+      email: auth.currentUser.email,
+    })
+      .then(() => {
+        console.log('Data submitted');
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+  
+  const [username, setUsername] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
@@ -57,6 +74,7 @@ const SignUp= () => {
         console.log(user.email);
       })
       .then(() => navigation.navigate("LoginPage"))
+      .then(create)
       .catch(error => alert(error.message))
   }
 
@@ -78,6 +96,16 @@ const SignUp= () => {
           </Text>
     
       <View style={styles.loginForm}>
+        <View style={styles.username}>
+          <TextInput
+            placeholder="Username"
+            autoCorrect={false}
+            value = {username}
+            onChangeText = {text => setUsername(text)}
+            style={styles.control}
+          />
+          <View id="spinner" style={styles.spinner}></View>
+        </View>
         <View style={styles.username}>
           <TextInput
             placeholder="Email"

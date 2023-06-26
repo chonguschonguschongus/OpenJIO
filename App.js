@@ -8,6 +8,8 @@ import Details from "./screens/Details";
 import LoginPage from "./screens/LoginPage";
 import SignUp from "./screens/SignUp";
 import UserProfile from "./screens/UserProfile";
+import Username from "./screens/Username";
+import Create from "./screens/Create";
 
 const Stack = createStackNavigator();
 
@@ -41,6 +43,8 @@ const App = () => {
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="Details" component={Details} />
         <Stack.Screen name="UserProfile" component={UserProfile} />
+        <Stack.Screen name="Username" component={Username} />
+        <Stack.Screen name="Create" component={Create} />
       </Stack.Navigator>
     </NavigationContainer>
   );
