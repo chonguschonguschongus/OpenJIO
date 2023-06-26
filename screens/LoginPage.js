@@ -21,7 +21,7 @@ const LoginPage = () => {
         const user = userCredentials.user;
         console.log('Logged in with:user.email');
       })
-      .then(() => navigation.navigate("Home"))
+      .then(() => navigation.replace("Home"))
       .catch(error => alert(error.message))
   }
 
