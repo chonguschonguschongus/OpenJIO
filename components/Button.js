@@ -16,6 +16,8 @@ export const CircleButton = ({
         borderRadius: SIZES.extraLarge,
         alignItems: "center",
         justifyContent: "center",
+        borderWidth: 0.5,  // Add border width
+        borderColor: COLORS.primary,  // Add border color
         ...props,
       }}
       onPress={handlePress}
@@ -28,7 +30,6 @@ export const CircleButton = ({
     </TouchableOpacity>
   );
 };
-
 export const BarButton = ({ imgUrl, handlePress, ...props }) => {
   const { isSelected = false } = props;
 

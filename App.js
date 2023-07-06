@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
+import { NavigationContainer, DefaultTheme, useNavigation } from "@react-navigation/native";
 import { useFonts } from "expo-font";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { Ionicons } from "@expo/vector-icons";
 
 import Home from "./screens/Home";
 import Details from "./screens/Details";
@@ -10,8 +12,75 @@ import SignUp from "./screens/SignUp";
 import UserProfile from "./screens/UserProfile";
 import Username from "./screens/Username";
 import Create from "./screens/Create";
+import MyEvent from "./screens/MyEvent";
 
 const Stack = createStackNavigator();
+const Tab = createBottomTabNavigator();
+
+const AuthStack = () => (
+  <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Screen name="LoginPage" component={LoginPage} />
+    <Stack.Screen name="SignUp" component={SignUp} />
+  </Stack.Navigator>
+);
+
+const HomeStack = () => (
+  <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Screen name="HomePage" component={Home} />
+    <Stack.Screen name="Details" component={Details} />
+  </Stack.Navigator>
+);
+
+const UserProfileStack = () => (
+  <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Screen name="UserProfile" component={UserProfile} />
+    <Stack.Screen name="Username" component={Username} />
+  </Stack.Navigator>
+);
+
+const MainTabs = () => {
+
+  return (
+    <Tab.Navigator screenOptions={{ headerShown: false }}>
+      <Tab.Screen
+        name="Home"
+        component={HomeStack}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="home-outline" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Create"
+        component={Create}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="add-circle-outline" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="MyEvent"
+        component={MyEvent}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="list-outline" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Profile"
+        component={UserProfileStack}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="person-outline" color={color} size={size} />
+          ),
+        }}
+      />
+    </Tab.Navigator>
+  );
+};
 
 const theme = {
   ...DefaultTheme,
@@ -34,17 +103,17 @@ const App = () => {
 
   return (
     <NavigationContainer theme={theme}>
-      <Stack.Navigator
-        screenOptions={{ headerShown: false }}
-        initialRouteName="LoginPage"
-      >
-        <Stack.Screen name="LoginPage" component={LoginPage} />
-        <Stack.Screen name="SignUp" component={SignUp} />
-        <Stack.Screen name="Home" component={Home} />
-        <Stack.Screen name="Details" component={Details} />
-        <Stack.Screen name="UserProfile" component={UserProfile} />
-        <Stack.Screen name="Username" component={Username} />
-        <Stack.Screen name="Create" component={Create} />
+      <Stack.Navigator initialRouteName="AuthStack" screenOptions={{ headerShown: false }}>
+        <Stack.Screen
+          name="AuthStack"
+          component={AuthStack}
+          options={{ animationTypeForReplace: "pop" }}
+        />
+        <Stack.Screen
+          name="MainTabs"
+          component={MainTabs}
+          options={{ animationTypeForReplace: "pop" }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

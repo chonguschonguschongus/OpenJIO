@@ -18,7 +18,7 @@ const DetailsBid = ({ bid }) => {
         source={bid.image}
         resizeMode="contain"
         style={{ width: 48, height: 68 }}
-      />
+      />a
 
       <View>
         <Text

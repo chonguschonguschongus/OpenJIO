@@ -6,12 +6,14 @@ import search from "../assets/icons/search.png";
 import audience from "../assets/icons/audience.png";
 import star from "../assets/icons/star.png";
 import signupicon from "../assets/icons/signupicon.png";
-import newlogo from "../assets/icons/newlogo.png";
+import newlogo from "../assets/icons/newlogo.jpg";
 import home from "../assets/icons/home.png";
 import liked from "../assets/icons/liked.png";
 import profile from "../assets/icons/profile.png";
 import settings from "../assets/icons/settings.png";
 import newactivity from "../assets/icons/newactivity.png";
+import deleteIcon from "../assets/icons/delete.png";
+import edit from "../assets/icons/Edit.png";
 
 import event01 from "../assets/images/Court.jpg";
 import event02 from "../assets/images/ECP.jpg";
@@ -41,7 +43,8 @@ export default {
   profile,
   settings,
   newactivity,
-
+  deleteIcon,
+  edit,
   event01,
   event02,
   event03,

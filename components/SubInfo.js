@@ -100,12 +100,14 @@ export const EndDate = () => {
       style={{
         paddingHorizontal: SIZES.font,
         paddingVertical: SIZES.base,
-        backgroundColor: COLORS.white,
+        backgroundColor: "#ddd",
         justifyContent: "center",
         alignItems: "center",
         ...SHADOWS.light,
         elevation: 1,
         maxWidth: "50%",
+        borderWidth: 0.2, // Add border width
+        borderColor: COLORS.primary, // Add border color
       }}
     >
       <Text
