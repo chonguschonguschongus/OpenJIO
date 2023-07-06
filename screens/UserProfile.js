@@ -6,27 +6,14 @@ import { assets, FONTS, COLORS, SIZES } from "../constants";
 import { RectButton } from "../components";
 import { db, auth } from "../firebase";
 import { TransButton } from "../components/Button";
-import { collection, doc, getDocs, updateDoc, addDoc} from "firebase/firestore"
+import { collection, getDocs} from "firebase/firestore"
 
 const UserProfile = () => {
 
   const navigation = useNavigation();
-  const [email, setEmail] = useState('')
-  const [username, setUsername] = useState('')
   const [Users, setUsers] = useState( [] )
   const usersCollectionRef = collection(db, "Users");
   
-  function create() {
-    addDoc(collection (db, "Users"), {
-      username : username,
-      email : auth.currentUser.email,
-    }). then(() => {
-      console.log ('data submitted');
-    }).catch((error) => {
-      console.log(error);
-    });;
-  }
-
   useEffect(() => {
     const getUsers = async () => {
       try {
@@ -47,7 +34,7 @@ const UserProfile = () => {
   const handleSignOut = () => {
     auth
       .signOut()
-      .then(() => navigation.replace("LoginPage"))
+      .then(() => navigation.replace("AuthStack"))
       .catch(error => alert(error.message))
   }
 
@@ -85,14 +72,6 @@ const UserProfile = () => {
         />
 
       </View>
-
-      <RectButton
-          text={"Create"}
-          minWidth={150}
-          fontSize={SIZES.large}
-          handlePress={() => navigation.navigate("Create")}
-        />
-      
   
       <TransButton
        text={"Sign Out"}
@@ -154,7 +133,7 @@ const styles = {
     height: 56,
     paddingHorizontal: 16,
     backgroundColor: "#f6f7ff",
-    color: "inherit",
+    color: "#000000",
     borderRadius: 6,
     marginVertical: 8,
     fontSize: 18,

@@ -1,18 +1,37 @@
-import { TouchableOpacity, View, Text, Image, TextInput } from "react-native";
-
+import { View, Text, Image, TextInput } from "react-native";
 import { COLORS, FONTS, SIZES, assets, SHADOWS} from "../constants";
-import { useNavigation } from "@react-navigation/native";
-import { CircleButton } from "./Button";
+
+import { db, auth } from "../firebase";
+import React, { useEffect, useState } from "react";
+import { collection, getDocs} from "firebase/firestore"
 
 const HomeHeader = ({ onSearch }) => {
 
-  const navigation = useNavigation();
+  const [Users, setUsers] = useState( [] )
+  const usersCollectionRef = collection(db, "Users");
+  
+  useEffect(() => {
+    const getUsers = async () => {
+      try {
+        const querySnapshot = await getDocs(usersCollectionRef);
+        const fetchedUsers = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setUsers(fetchedUsers);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getUsers();
+  }, []);
 
   return (
     <View
       style={{
         backgroundColor: COLORS.primary,
         padding: SIZES.font,
+        width: "100%",
       }}
     >
       <View
@@ -20,44 +39,39 @@ const HomeHeader = ({ onSearch }) => {
           flexDirection: "row",
           justifyContent: "space-between",
           alignItems: "center",
+          width: "100%",
         }}
       >
         <Image
           source={assets.newlogo}
           resizeMode="contain"
-          style={{ width: 90, height: 25 }}
+          style={{ width: 60, height: 60 }}
         />
 
-        <View style={{ width: 45, height: 45 }}>
-          <CircleButton
-            imgUrl={assets.person01}
-            handlePress={() => navigation.navigate("UserProfile")}
-          />
-        </View>
       </View>
       
-      <View style={{ marginVertical: SIZES.font }}>
-        <Text
-          style={{
-            fontFamily: FONTS.regular,
-            fontSize: SIZES.small,
-            color: COLORS.white,
-          }}
-        >
-          Hey! Isaac 👋
-        </Text>
-        <Text
-          style={{
-            fontFamily: FONTS.bold,
-            fontSize: SIZES.large,
-            color: COLORS.white,
-            marginTop: SIZES.base / 2,
-          }}
-        >
-          Don't say bojio!
-        </Text>
-      </View>
+      <View style={{ marginVertical: SIZES.font }}>{Users.map((item) => {
+      // Check if the item's ID matches the ID of the current user
+      if (item.id === auth.currentUser.uid) {
+        return (
+          <View key={item.id}>
+            <Text
+             style={{
+             fontFamily: FONTS.regular,
+             fontSize: 25,
+             color: COLORS.white,
+             marginLeft : -5,
+             }}
+            > Hey {item.username},</Text>
+          </View>
+        );
+      } else {
+        return null;
+      }
+     })}
 
+      </View>
+      
       <View style={{ marginTop: SIZES.font }}>
         <View
           style={{
@@ -75,7 +89,7 @@ const HomeHeader = ({ onSearch }) => {
             resizeMode="contain"
             style={{ width: 20, height: 20, marginRight: SIZES.base }}
           />
-          <TextInput
+          <TextInput 
             placeholder="Find something to do!"
             style={{ flex: 1 }}
             onChangeText={onSearch}

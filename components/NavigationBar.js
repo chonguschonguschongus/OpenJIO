@@ -9,7 +9,7 @@ const NavigationBar = () => {
   const navigation = useNavigation();
 
   const handleHomePress = () => {
-    navigation.navigate("Create");
+    console.log("pressed");
   };
 
   const handleCreatePress = () => {
@@ -26,7 +26,7 @@ const NavigationBar = () => {
         />
         <BarButton
           imgUrl={assets.liked}
-          handlePress={handleCreatePress}
+          handlePress={handleHomePress}
           style={styles.IconBehaviour}
         />
         <BarButton 

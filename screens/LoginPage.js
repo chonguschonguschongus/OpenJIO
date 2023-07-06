@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
-import { KeyboardAvoidingView, View, TextInput, Image, Text, SafeAreaView } from "react-native";
+import { View, TextInput, Image, Text, SafeAreaView } from "react-native";
 
 import { assets, FONTS, COLORS, SIZES } from "../constants";
 import { RectButton } from "../components";
@@ -21,7 +21,7 @@ const LoginPage = () => {
         const user = userCredentials.user;
         console.log('Logged in with:user.email');
       })
-      .then(() => navigation.replace("Home"))
+      .then(() => navigation.replace("MainTabs"))
       .catch(error => alert(error.message))
   }
 
@@ -118,12 +118,11 @@ const styles = {
   control: {
     borderWidth: 1.5,
     borderColor: "#dfe1f0",
-    outlineColor: "transparent",
     width: "100%",
     height: 56,
     paddingHorizontal: 16,
     backgroundColor: "#f6f7ff",
-    color: "inherit",
+    color: "#000000",
     borderRadius: 6,
     marginVertical: 8,
     fontSize: 18,

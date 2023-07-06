@@ -5,8 +5,7 @@ import {  View, TextInput, Image, Text, SafeAreaView} from "react-native";
 import { assets, FONTS, COLORS, SIZES } from "../constants";
 import { RectButton } from "../components";
 import { db, auth } from "../firebase";
-import { TransButton } from "../components/Button";
-import { collection, doc, getDoc, updateDoc, addDoc} from "firebase/firestore"
+import { writeBatch, collection, doc, getDoc, getDocs, updateDoc, query, where} from "firebase/firestore"
 
 const UserProfile = () => {
 
@@ -20,15 +19,41 @@ const UserProfile = () => {
         console.log("No user logged in.");
         return;
       }
-
+  
       const userDocRef = doc(db, "Users", currentUser.uid);
       const userDocSnapshot = await getDoc(userDocRef);
-
+  
       if (userDocSnapshot.exists()) {
+        const userData = userDocSnapshot.data();
+        const oldUsername = userData.username;
+  
         await updateDoc(userDocRef, {
           username: username,
         });
         console.log("Document updated successfully");
+  
+        // Update event creator usernames
+        const eventsCollectionRef = collection(db, "Event");
+        const eventsQuerySnapshot = await getDocs(
+          query(eventsCollectionRef, where("userID", "==", currentUser.uid))
+        );
+        
+        const batch = writeBatch(db);
+        
+        eventsQuerySnapshot.docs.forEach((eventDoc) => {
+          const eventDocRef = doc(db, "Event", eventDoc.id);
+
+          batch.update(eventDocRef, {
+            creator: username,
+          });
+        });
+  
+        try {
+          await batch.commit();
+          console.log("Event creators' usernames updated successfully");
+        } catch (error) {
+          console.log("Error updating event creators' usernames:", error);
+        }
       } else {
         console.log("User document does not exist");
       }
@@ -120,7 +145,6 @@ const styles = {
   control: {
     borderWidth: 1.5,
     borderColor: "#dfe1f0",
-    outlineColor: "transparent",
     width: "100%",
     height: 56,
     paddingHorizontal: 16,
