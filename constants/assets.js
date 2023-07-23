@@ -14,6 +14,9 @@ import settings from "../assets/icons/settings.png";
 import newactivity from "../assets/icons/newactivity.png";
 import deleteIcon from "../assets/icons/delete.png";
 import edit from "../assets/icons/Edit.png";
+import upload from "../assets/icons/upload.png";
+import filled from "../assets/icons/filled.png";
+import emptied from "../assets/icons/emptied.png";
 
 import event01 from "../assets/images/Court.jpg";
 import event02 from "../assets/images/ECP.jpg";
@@ -45,6 +48,9 @@ export default {
   newactivity,
   deleteIcon,
   edit,
+  emptied,
+  filled,
+  
   event01,
   event02,
   event03,
@@ -52,6 +58,7 @@ export default {
   event05,
   event06,
   event07,
+  upload,
 
   person01,
   person02,

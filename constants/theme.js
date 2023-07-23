@@ -6,6 +6,7 @@ export const COLORS = {
   gray: "#74858C",
   red : "#FF0000",
   green : "#00FF00",
+  dg : '#585450'
 };
 
 export const SIZES = {

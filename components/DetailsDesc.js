@@ -8,6 +8,8 @@ import { COLORS, SIZES, FONTS } from "../constants";
 const DetailsDesc = ({ data }) => {
   const [text, setText] = useState(data.description.slice(0, 100));
   const [readMore, setReadMore] = useState(false);
+  const eventDate = data.EndDate ? data.EndDate.toDate().toLocaleDateString() : '';
+
   return (
     <>
       <View
@@ -20,7 +22,7 @@ const DetailsDesc = ({ data }) => {
       >
         <EventTitle
           title={data.name}
-          subTitle={data.creator}
+          subTitle={"Creator : " + data.creator}
           titleSize={SIZES.extraLarge}
           subTitleSize={SIZES.font}
         />
@@ -56,7 +58,7 @@ const DetailsDesc = ({ data }) => {
                   setText(data.description);
                   setReadMore(true);
                 } else {
-                  setText(data.description.slice(0, 100));
+                  setText(data.description.slice(0, 50));
                   setReadMore(false);
                 }
               }}
@@ -66,8 +68,30 @@ const DetailsDesc = ({ data }) => {
                 color: COLORS.primary,
               }}
             >
-              {readMore ? " Show less" : "Read more"}
+              {readMore ? "  Show less" : "Read more"}
             </Text>
+          </Text>
+        </View>
+
+        <View style={{ marginTop: 25 }}>
+          <Text
+            style={{
+              fontSize: SIZES.font,
+              fontFamily: FONTS.semiBold,
+              color: COLORS.primary,
+            }}
+          >
+            Date
+          </Text>
+          <Text
+            style={{
+              fontSize: SIZES.small,
+              fontFamily: FONTS.regular,
+              color: COLORS.secondary,
+              lineHeight: SIZES.large,
+            }}
+          >
+            {eventDate} {/* Display the formatted event date */}
           </Text>
         </View>
       </View>

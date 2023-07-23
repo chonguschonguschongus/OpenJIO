@@ -7,12 +7,16 @@ import { RectButton } from "../components";
 import { db, auth } from "../firebase";
 import { TransButton } from "../components/Button";
 import { collection, doc, setDoc, addDoc} from "firebase/firestore"
+import { getStorage,ref,uploadBytes,getDownloadURL } from "firebase/storage";
+import * as DocumentPicker from "expo-document-picker";
+import { UploadButton } from "../components/Button";
 
 const strengthLabels = ["weak", "medium", "strong"];
 
 const SignUp= () => {
   const navigation = useNavigation();
-
+  const [downloadURL, setDownloadURL] = useState('');
+  const [fileUploaded, setFileUploaded] = useState(false);
   const [strength, setStrength] = useState("");
 
   const getStrength = (password) => {
@@ -43,6 +47,46 @@ const SignUp= () => {
     setStrength(strengthLabels[strengthIndicator] || "");
   };
 
+  const handleUpload = async () => {
+    try {
+      const { canceled, assets } = await DocumentPicker.getDocumentAsync({
+        type: "image/*",
+        copyToCacheDirectory: false,
+      });
+  
+      if (canceled) {
+        console.log("Document picker canceled.");
+        return;
+      }
+  
+      if (assets.length > 0) {
+        const selectedAsset = assets[0];
+        const storage = getStorage();
+        const storageRef = ref(storage, "dp/" + selectedAsset.name);
+  
+        // Read the file content using fetch
+        const response = await fetch(selectedAsset.uri);
+        const blob = await response.blob();
+  
+        // Upload the blob with the Content-Type explicitly set to "image/jpeg"
+        await uploadBytes(storageRef, blob, { contentType: "image/jpeg" });
+  
+        console.log("Image uploaded to Firebase Storage successfully!");
+  
+        const downloadURL = await getDownloadURL(storageRef);
+        setDownloadURL(downloadURL);
+        setFileUploaded(true);
+        console.log("File available at:", downloadURL);
+  
+        // TODO: Handle the file upload separately, e.g., save the downloadURL to Firestore or perform any other desired operation
+      } else {
+        console.log("No file selected.");
+      }
+    } catch (error) {
+      console.error("Error uploading image to Firebase Storage:", error);
+    }
+  };
+
   const handleChange = (text) => {
     getStrength(text);
   };
@@ -53,6 +97,7 @@ const SignUp= () => {
     setDoc(userDocRef, {
       username: username,
       email: auth.currentUser.email,
+      dp: downloadURL,
     })
       .then(() => {
         console.log('Data submitted');
@@ -83,7 +128,10 @@ const SignUp= () => {
       style={styles.loginCard}
       behaviour = "padding">
 
-      <Image source={assets.newlogo} style={styles.logo} />
+      <UploadButton
+        imgUrl={fileUploaded ? {uri:downloadURL} : assets.upload} // Pass the image source for your logo here
+        handlePress={handleUpload} // Handle the image upload logic here
+      />
 
       <Text style={styles.h2}>Sign Up</Text>
       <Text style={styles.h3}>Already a member?

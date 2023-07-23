@@ -3,8 +3,8 @@ import { Text, View, SafeAreaView, ScrollView, FlatList, RefreshControl, StyleSh
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { COLORS, EventData, assets } from "../constants";
 import { EventCard, HomeHeader, FocusedStatusBar, NavigationBar} from "../components";
-import { db } from "../firebase";
-import { collection, getDocs } from "firebase/firestore";
+import { auth, db } from "../firebase";
+import { collection, getDocs,query, where } from "firebase/firestore";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 
@@ -24,10 +24,13 @@ const Home = () => {
 
   const retrieveEventDataFromFirestore = async () => {
     try {
+      const userUID = auth.currentUser.uid;
       const eventCollectionRef = collection(db, "Event");
-      const eventSnapshot = await getDocs(eventCollectionRef);
-
-      const retrievedEventData = eventSnapshot.docs.map((doc) => ({
+      const querySnapshot = await getDocs(
+        query(eventCollectionRef, where("userID", "!=", userUID))
+      );
+  
+      const retrievedEventData = querySnapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
       }));
@@ -36,12 +39,6 @@ const Home = () => {
       console.log("Error retrieving event data from Firestore:", error);
     }
   };
-
-  const renderEmptyList = () => (
-    <View style={styles.emptyContainer}>
-      <Text style={styles.noEventDataText}>No events found.</Text>
-    </View>
-  );
 
   const handleSearch = (value) => {
     // Filter the retrieved event data based on the search value
@@ -75,8 +72,7 @@ const Home = () => {
         >
           <HomeHeader onSearch={handleSearch} />
         </LinearGradient>
-        
-  
+       
         <View style={styles.cardContainer}>
           {eventData.length > 0 ? (
             eventData.map((item) => <EventCard key={item.id} data={item} />)
@@ -85,12 +81,14 @@ const Home = () => {
               <Text style={styles.noEventDataText}>No events found.</Text>
             </View>
           )}
-        </View>
+        </View> 
   
         <View style={styles.backgroundContainer}>
           <View style={styles.backgroundSection}></View>
-          <View style={styles.backgroundSection}></View>
         </View>
+          <View style={styles.endMessageContainer}>
+            <Text style={styles.endMessageText}>No more Jios~</Text>
+          </View>
       </ScrollView>
     </View>
   );
@@ -101,6 +99,16 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     alignItems: "center",
     backgroundColor: "#F5F5F5",
+  },
+  endMessageContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 30,
+    marginBottom: 10,
+  },
+  endMessageText: {
+    fontSize: 15,
+    color: COLORS.primary,
   },
   headerContainer: {
     width: "100%",
@@ -127,9 +135,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   backgroundSection: {
-    height: 100,
+    height: 20,
     backgroundColor: COLORS.primary,
-    marginBottom: 16,
+    marginBottom: 10,
   },
 });
 

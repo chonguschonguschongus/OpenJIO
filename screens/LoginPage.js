@@ -70,6 +70,12 @@ const LoginPage = () => {
           fontSize={SIZES.large}
           handlePress={() => navigation.navigate("SignUp")}
         />
+        <TransButton
+          text={"Forgot Password"}
+          minWidth={0}
+          fontSize={SIZES.large}
+          handlePress={() => navigation.navigate("Forget")}
+        />
     </SafeAreaView>
   );
 };
