@@ -92,6 +92,11 @@ const SignUp= () => {
   };
   
   function create() {
+    if (!fileUploaded) {
+      console.log("Please upload a file before creating.");
+      return;
+    }
+
     const userDocRef = doc(db, "Users", auth.currentUser.uid);
   
     setDoc(userDocRef, {
@@ -112,6 +117,11 @@ const SignUp= () => {
   const [password, setPassword] = useState('')
 
   const handleSignUp = () => {
+    if (!fileUploaded) {
+      console.log("Please upload a file before creating.");
+      return;
+    }
+
     auth
       .createUserWithEmailAndPassword(email, password)
       .then(userCredentials => {
@@ -185,6 +195,13 @@ const SignUp= () => {
           fontSize={SIZES.large}
           handlePress={handleSignUp}
         />
+        <View style={styles.bar}></View>
+        {fileUploaded && (
+          <Text style={styles.fileUploadedText}>Image uploaded!</Text>
+        )}
+        {!fileUploaded && (
+          <Text style={styles.fileNotUploadedText}>Upload an profile picture!</Text>
+        )}
       </View>
     </SafeAreaView>
   );
