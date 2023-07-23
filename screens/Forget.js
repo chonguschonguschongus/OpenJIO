@@ -85,7 +85,6 @@ const styles = StyleSheet.create({
     padding: 10,
     marginBottom: 20,
     fontSize: 16,
-    fontFamily: "Arial",
     backgroundColor: "#fff",
   },
   successMessage: {
