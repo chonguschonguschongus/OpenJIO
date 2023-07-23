@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { NavigationContainer, useNavigation } from "@react-navigation/native";
-import { View, TextInput, Image, Text, SafeAreaView, StyleSheet} from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { View, TextInput, Image, Text, SafeAreaView, TouchableOpacity} from "react-native";
 
 import { assets, FONTS, COLORS, SIZES } from "../constants";
 import { RectButton } from "../components";
@@ -9,6 +9,7 @@ import { TransButton } from "../components/Button";
 import { collection, doc, getDoc, getDocs, addDoc} from "firebase/firestore"
 import { getStorage,ref,uploadBytes,getDownloadURL } from "firebase/storage";
 import * as DocumentPicker from "expo-document-picker";
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 const Create = () => {
 
@@ -21,7 +22,23 @@ const Create = () => {
   const usersCollectionRef = collection(db, "Users");
   const [downloadURL, setDownloadURL] = useState('');
   const [fileUploaded, setFileUploaded] = useState(false);
-  
+  const [showDatePicker, setShowDatePicker] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(new Date());
+
+  const handleDateChange = (event, date) => {
+    if (date === undefined) {
+      // Cancel button pressed
+      setShowDatePicker(false);
+      return;
+    }
+
+    setShowDatePicker(false);
+    setSelectedDate(date);
+  };
+  const handleDatePickerPress = () => {
+    setShowDatePicker(true);
+  };
+
   const resetForm = () => {
     setTitle("");
     setDesc("");
@@ -39,7 +56,6 @@ const Create = () => {
     const eventCollectionRef = collection(db, "Event");
     const currentUser = auth.currentUser;
   
-    // Get the username of the current user from the Users collection
     const currentUserDocRef = doc(db, "Users", auth.currentUser.uid);
     const getUsername = async () => {
       try {
@@ -48,15 +64,17 @@ const Create = () => {
           const userData = userDocSnapshot.data();
           const username = userData.username;
   
-          // Create the event document with the creator's username
+          
           addDoc(eventCollectionRef, {
             userID: currentUser.uid,
             name: title,
             description: description,
             persons: no,
             image: downloadURL,
-            creator: username, // Add the creator's username field
+            creator: username, 
             createdAt: new Date(),
+            EndDate: selectedDate,
+            bids: [], 
           })
             .then(() => {
               console.log("Data submitted");
@@ -70,11 +88,10 @@ const Create = () => {
       } catch (error) {
         console.log(error);
       }
-    };
-  
+    }
     getUsername();
   }
-  
+
   const handleUpload = async () => {
     try {
       const { canceled, assets } = await DocumentPicker.getDocumentAsync({
@@ -90,7 +107,7 @@ const Create = () => {
       if (assets.length > 0) {
         const selectedAsset = assets[0];
         const storage = getStorage();
-        const storageRef = ref(storage, "images/" + selectedAsset.name);
+        const storageRef = ref(storage, "event/" + selectedAsset.name);
   
         // Read the file content using fetch
         const response = await fetch(selectedAsset.uri);
@@ -157,6 +174,7 @@ const Create = () => {
             value = {description}
             onChangeText = {text => setDesc(text)}
             style={styles.textInput1}
+            multiline
           />
 
         <TextInput
@@ -172,12 +190,36 @@ const Create = () => {
         </View>
       </View>
         
+      <View style={styles.tabContainer}>
+        <TextInput
+          placeholder="Select date"
+          value={selectedDate.toDateString()} // Format the selectedDate to display in the TextInput
+          onFocus={handleDatePickerPress}
+          style={styles.control1}
+        />
+
+        <TouchableOpacity style={styles.datePickerButton} onPress={handleDatePickerPress}>
+          <Text style={styles.datePickerButtonText}>Select Date</Text>
+        </TouchableOpacity>
+
+
+        {showDatePicker && (
+          <DateTimePicker
+            value={selectedDate}
+            mode="date"
+            display="default"
+            onChange={handleDateChange}
+          />
+        )}
+      </View>
+
       <RectButton
-       text={"Create"}
-       minWidth={200}
+        text={"Create"}
+        minWidth={200}
         fontSize={SIZES.large}
-       handlePress={create} 
+        handlePress={create} 
       />
+
       <View style={styles.bar}></View>
       <TransButton
         text={"Upload image"}
@@ -205,6 +247,24 @@ const styles = {
     alignItems: "center",
     justifyContent: "center",
     transitionDuration: 0.4,
+  },
+  
+  tabContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+
+  datePickerButton: {
+    backgroundColor: COLORS.dg,
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+    borderRadius: 6,
+    marginLeft: 7,
+  },
+  datePickerButtonText: {
+    color: COLORS.white,
+    fontSize: 16,
+    fontWeight: 'bold',
   },
   logo: {
     width: 100,
@@ -257,7 +317,20 @@ const styles = {
     backgroundColor: "#f6f7ff",
     color: "#000000",
     borderRadius: 6,
-    marginVertical: 8,
+    marginVertical: 10,
+    fontSize: 18,
+    fontFamily: FONTS.regular,
+  },
+  control1: {
+    borderWidth: 1.5,
+    borderColor: "#dfe1f0",
+    width: "70%",
+    height: 50,
+    paddingHorizontal: 16,
+    backgroundColor: "#f6f7ff",
+    color: "#000000",
+    borderRadius: 6,
+    marginVertical: 10,
     fontSize: 18,
     fontFamily: FONTS.regular,
   },

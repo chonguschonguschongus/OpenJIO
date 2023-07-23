@@ -13,6 +13,9 @@ import UserProfile from "./screens/UserProfile";
 import Username from "./screens/Username";
 import Create from "./screens/Create";
 import MyEvent from "./screens/MyEvent";
+import Edit from "./screens/Edit";
+import Forget from "./screens/Forget";
+import Favorite from "./screens/Favorite";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -21,6 +24,7 @@ const AuthStack = () => (
   <Stack.Navigator screenOptions={{ headerShown: false }}>
     <Stack.Screen name="LoginPage" component={LoginPage} />
     <Stack.Screen name="SignUp" component={SignUp} />
+    <Stack.Screen name="Forget" component={Forget} />
   </Stack.Navigator>
 );
 
@@ -28,6 +32,7 @@ const HomeStack = () => (
   <Stack.Navigator screenOptions={{ headerShown: false }}>
     <Stack.Screen name="HomePage" component={Home} />
     <Stack.Screen name="Details" component={Details} />
+    <Stack.Screen name="Edit" component={Edit} />
   </Stack.Navigator>
 );
 
@@ -35,6 +40,14 @@ const UserProfileStack = () => (
   <Stack.Navigator screenOptions={{ headerShown: false }}>
     <Stack.Screen name="UserProfile" component={UserProfile} />
     <Stack.Screen name="Username" component={Username} />
+  </Stack.Navigator>
+);
+
+const MyEventStack = () => (
+  <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Screen name="MyEventPage" component={MyEvent} />
+    <Stack.Screen name="Details" component={Details} />
+    <Stack.Screen name="Edit" component={Edit} />
   </Stack.Navigator>
 );
 
@@ -52,6 +65,15 @@ const MainTabs = () => {
         }}
       />
       <Tab.Screen
+        name="Favorite"
+        component={Favorite}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="heart-outline" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tab.Screen
         name="Create"
         component={Create}
         options={{
@@ -62,7 +84,7 @@ const MainTabs = () => {
       />
       <Tab.Screen
         name="MyEvent"
-        component={MyEvent}
+        component={MyEventStack}
         options={{
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="list-outline" color={color} size={size} />

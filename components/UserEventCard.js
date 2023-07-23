@@ -1,4 +1,4 @@
-import { Alert, View, Image, Text } from "react-native";
+import { Alert, View, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { COLORS, SIZES, SHADOWS, assets } from "../constants";
 import { CircleButton, RectButton } from "./Button";
@@ -29,7 +29,13 @@ const UserEventCard = ({ data }) => {
     );
   };
   return (
-    <View
+    <TouchableOpacity
+      onPress={() => {navigation.navigate("Details", { data })
+        console.log("UserEventCard pressed");
+      }}
+    >
+      
+   <View
       style={{
         backgroundColor: COLORS.white,
         borderRadius: SIZES.font,
@@ -38,11 +44,12 @@ const UserEventCard = ({ data }) => {
         ...SHADOWS.dark,
       }}
     >
+      
       <View style={{ width: "100%", height: 15 }}>
         
       </View>
 
-      <SubInfo />
+      <SubInfo eventID={data.id} />
 
       <View style={{ width: "100%", padding: SIZES.font }}>
         <EventTitle
@@ -76,16 +83,19 @@ const UserEventCard = ({ data }) => {
             <View style={{ marginRight: 5 }}>
             <CircleButton
               imgUrl={assets.edit}
-              handlePress={() => console.log("Heart button pressed")}
+              handlePress={() => navigation.navigate("Edit", { event : data })}
               right={-5}
               bottom = {-10}
             />
+           
             </View>
 
           </View>
         </View>
       </View>
     </View>
+   
+    </TouchableOpacity>
   );
 };
 

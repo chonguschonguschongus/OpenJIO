@@ -15,25 +15,25 @@ const DetailsBid = ({ bid }) => {
       }}
     >
       <Image
-        source={bid.image}
+        source={{uri: bid.image}}
         resizeMode="contain"
         style={{ width: 48, height: 68 }}
-      />a
+      />
 
       <View>
         <Text
           style={{
             fontFamily: FONTS.semiBold,
-            fontSIZE: SIZES.small,
+            fontSize: SIZES.small,
             color: COLORS.primary,
           }}
         >
-          {bid.name} is interested in this Jio
+          {bid.name} is joining this Jio
         </Text>
         <Text
           style={{
             fontFamily: FONTS.regular,
-            fontSIZE: SIZES.small - 2,
+            fontSize: SIZES.small - 2,
             color: COLORS.secondary,
             marginTop: 3,
           }}

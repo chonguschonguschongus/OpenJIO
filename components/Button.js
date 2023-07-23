@@ -30,20 +30,35 @@ export const CircleButton = ({
     </TouchableOpacity>
   );
 };
-export const BarButton = ({ imgUrl, handlePress, ...props }) => {
-  const { isSelected = false } = props;
 
-  const containerStyles = {
-    borderWidth: 1,
-    borderColor: isSelected ? "dodgerblue" : "grey",
-  };
-
+export const UploadButton = ({ 
+  imgUrl, 
+  handlePress, 
+  ...props 
+}) => {
   return (
-    <TouchableOpacity onPress={handlePress}>
-      <Image
-        style={{ width: 40, height: 40 }}
+    <TouchableOpacity
+      style={{
+        width: 200,
+        height: 200,
+        backgroundColor: COLORS.white,
+        borderRadius: 100,
+        alignItems: "center",
+        justifyContent: "center",
+        borderWidth: 0.5,  // Add border width
+        borderColor: COLORS.primary,  // Add border color
+        ...props,
+      }}
+      onPress={handlePress}
+    >
+     <Image
+        style={{
+          width: 140, // Adjust the width and height of the image to fit inside the circle
+          height: 140,
+          borderRadius: 0, // Half of the width/height to make the image circular
+        }}
         source={imgUrl}
-        resizeMode="contain"
+        resizeMode="contain" // Use "cover" to fill the entire circle with the image
       />
     </TouchableOpacity>
   );
@@ -94,7 +109,7 @@ export const TransButton = ({
         backgroundColor: "#FFF",
         borderRadius: SIZES.extraLarge,
         minWidth: minWidth,
-        padding: SIZES.small,
+        padding: 3,
         ...props,
       }}
       onPress={handlePress}

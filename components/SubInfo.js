@@ -1,5 +1,8 @@
 import { View, Text, Image } from "react-native";
 import { COLORS, SIZES, FONTS, SHADOWS, assets } from "../constants";
+import { useEffect, useState } from "react";
+import { collection, doc, getDoc } from "firebase/firestore";
+import { db } from "../firebase";
 
 export const EventTitle = ({ title, subTitle, titleSize, subTitleSize }) => {
   return (
@@ -30,9 +33,9 @@ export const Pax = ({ persons }) => {
   return (
     <View style={{ flexDirection: "row", alignItems: "center" }}>
       <Image
-        source={assets.audience}
+        source= {assets.audience}
         resizeMode="contain"
-        style={{ width: 20, height: 20, marginRight: 2 }}
+        style= {{ width: 20, height: 20, marginRight: 2 }}
       />
       <Text
         style={{
@@ -82,17 +85,16 @@ export const ImageCMP = ({ imgUrl, index }) => {
   );
 };
 
-export const People = () => {
+export const People = ({ peopleImages }) => {
   return (
     <View style={{ flexDirection: "row" }}>
-      {[assets.person02, assets.person03, assets.person04].map(
-        (imgUrl, index) => (
-          <ImageCMP imgUrl={imgUrl} index={index} key={`People-${index}`} />
-        )
-      )}
+      {peopleImages.map((imgUrl, index) => (
+        <ImageCMP imgUrl={{ uri: imgUrl }} index={index} key={`People-${index}`} />
+      ))}
     </View>
   );
 };
+
 
 export const EndDate = () => {
   return (
@@ -126,25 +128,25 @@ export const EndDate = () => {
           color: COLORS.primary,
         }}
       >
-        28th January
+        26th January
       </Text>
     </View>
   );
 };
 
-export const SubInfo = () => {
+export const SubInfo = ({ eventID }) => {
+
   return (
     <View
       style={{
         width: "100%",
-        paddingHorizontal: SIZES.font,
-        marginTop: -SIZES.extraLarge,
+        paddingHorizontal: 12,
+        marginTop: 0,
         flexDirection: "row",
         justifyContent: "space-between",
       }}
     >
-      <People />
-      <EndDate />
+
     </View>
   );
 };
