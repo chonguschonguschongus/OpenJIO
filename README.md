@@ -38,16 +38,13 @@ The aim of our search is to bring together a diverse group of individuals who sh
 
 
 # Features
-1. Users can Create OpenJios with activity descriptions, date, time and number of people needed.
-2. Users can Accept OpenJios to “apply” to partake in the activity.x
-3. OpenJios Creators can vet and review all Acceptors’ profiles before picking the ones they prefer.
-4. Users can communicate in real-time to discuss details of the activity before Accepting.
-5. Users will have achievement badges based on their OpenJios Created/ Accepted displayed on their profiles.
-6. User reviews system that is similar to the one in Carousell. Reviews will be displayed on their profiles.
-7. Acceptors can review the Creators of the OpenJio and vice versa after activity is completed.
-8. A For You page with recommended OpenJios for users based on user data and preferences with machine learning.
-9. A Search and Filter page to find OpenJios based on title and filter out OpenJio categories.
-10. Forum page for users to discuss whatever they want to discuss. 
+Features
+1. Users can create Events for other people to join.
+2. Users can Join open Events.
+3. Users can see who else is joining the Events
+4. Account creation and authentication for users.
+5. User can favourite certain Events they like. 
+
 
 
 # Timeline & Features to be Completed
