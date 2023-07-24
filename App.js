@@ -4,7 +4,9 @@ import { NavigationContainer, DefaultTheme, useNavigation } from "@react-navigat
 import { useFonts } from "expo-font";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
+import { LogBox } from 'react-native';
 
+LogBox.ignoreLogs(['Each child in a list should have a unique "key" prop']);
 import Home from "./screens/Home";
 import Details from "./screens/Details";
 import LoginPage from "./screens/LoginPage";

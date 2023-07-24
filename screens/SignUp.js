@@ -19,33 +19,6 @@ const SignUp= () => {
   const [fileUploaded, setFileUploaded] = useState(false);
   const [strength, setStrength] = useState("");
 
-  const getStrength = (password) => {
-    let strengthIndicator = -1;
-
-    let upper = false,
-      lower = false,
-      numbers = false;
-
-    for (let index = 0; index < password.length; index++) {
-      let char = password.charCodeAt(index);
-      if (!upper && char >= 65 && char <= 90) {
-        upper = true;
-        strengthIndicator++;
-      }
-
-      if (!numbers && char >= 48 && char <= 57) {
-        numbers = true;
-        strengthIndicator++;
-      }
-
-      if (!lower && char >= 97 && char <= 122) {
-        lower = true;
-        strengthIndicator++;
-      }
-    }
-
-    setStrength(strengthLabels[strengthIndicator] || "");
-  };
 
   const handleUpload = async () => {
     try {
@@ -119,6 +92,11 @@ const SignUp= () => {
   const handleSignUp = () => {
     if (!fileUploaded) {
       console.log("Please upload a file before creating.");
+      return;
+    }
+    
+    if (!username || !email || !password) {
+      alert("Please fill in all the required fields.");
       return;
     }
 
@@ -251,12 +229,10 @@ const styles = {
   control: {
     borderWidth: 1.5,
     borderColor: "#dfe1f0",
-    outlineColor: "transparent",
     width: "100%",
     height: 56,
     paddingHorizontal: 16,
     backgroundColor: "#f6f7ff",
-    color: "inherit",
     borderRadius: 6,
     marginVertical: 8,
     fontSize: 18,
