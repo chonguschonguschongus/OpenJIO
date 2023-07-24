@@ -65,13 +65,16 @@ The aim of our search is to bring together a diverse group of individuals who sh
 24 July 2023 - Evaluation Milestone 3: 
 - For You Page of OpenJIOs [REMOVED]
 - Algorithmic recommendation of OpenJIOs [REMOVED]
-- Rating systems
+- Rating systems [DELAYED]
 - Favourites
 - Edit Profile
 
 24 Aug 2023 - Splashdown:
 - Polish up the system
 - Implement forum
+
+# Testing
+We did user testing to ensure our naviagation stack was functioning properly. Our logs are recorded in our Drive.
 
 # Google Drive Folder
 Here you can find our poster and Proof of Concept demo video as well as other pertinent files. [https://drive.google.com/drive/folders/1pP2DYJNuM605Ki6p7UJCCHxepzkqcKwk?usp=drive_link]
