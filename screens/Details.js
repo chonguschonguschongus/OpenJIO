@@ -70,7 +70,6 @@ const Details = ({ route, navigation }) => {
 
       if (eventDocSnapshot.exists()) {
         const eventData = eventDocSnapshot.data();
-        // Assuming that the required number of people is stored as 'requiredPeople' in the document
         const requiredPeople = eventData.persons || 0;
         setRequiredPeopleCount(requiredPeople);
       }
@@ -80,7 +79,6 @@ const Details = ({ route, navigation }) => {
   };
 
   useEffect(() => {
-    // Check if the current user has joined the event
     const currentUser = auth.currentUser;
     const joined = data.bids?.some((bid) => bid.id === currentUser.uid);
     setUserJoinedEvent(joined);
@@ -173,14 +171,13 @@ const Details = ({ route, navigation }) => {
         await updateDoc(docRef, { bids: updatedBids });
         await retrieveEventDataFromFirestore();
         console.log("User quit the event successfully");
-        setUserJoinedEvent(false); // Update the state to indicate that the user has quit the event
+        setUserJoinedEvent(false); 
       }
     } catch (error) {
       console.log("Error quitting the event:", error);
     }
   };
 
-  // Compute if the event is full based on the current data
   const isFull = useMemo(() => {
     return data.bids && data.bids.length >= requiredPeopleCount;
   }, [data.bids, requiredPeopleCount]);
@@ -198,7 +195,7 @@ const Details = ({ route, navigation }) => {
           zIndex: 1,
         }}
       >
-       {isCreator ? ( // Render the "Edit Event" button for the creator
+       {isCreator ? ( 
     <RectButton
       text={"Edit Event"}
       minWidth={170}
@@ -206,7 +203,7 @@ const Details = ({ route, navigation }) => {
       fontSize={SIZES.large}
       {...SHADOWS.dark}
     />
-      ) : userJoinedEvent ? ( // Render the "Quit Jio" button for joined users
+      ) : userJoinedEvent ? ( 
         <RectButton
           text={"Quit Jio"}
           minWidth={170}
@@ -218,10 +215,10 @@ const Details = ({ route, navigation }) => {
         <RectButton
           text={"More Event"}
           minWidth={170}
-          handlePress={handleMakeBid}
+          handlePress={() => navigation.goBack()}
           fontSize={SIZES.large}
           {...SHADOWS.dark}
-        /> : ( // Render the "Join Jio" button for non-joined users
+        /> : ( 
         <RectButton
           text={"Join Jio"}
           minWidth={170}
@@ -234,7 +231,7 @@ const Details = ({ route, navigation }) => {
       </View>
 
 <FlatList
-  data={eventData.find(event => event.id === data.id)?.bids || []} // Use an empty array if bids is undefined
+  data={eventData.find(event => event.id === data.id)?.bids || []} 
   renderItem={({ item }) => <DetailsBid bid={item} />}
   keyExtractor={(item) => item.id}
   showsVerticalScrollIndicator={false}

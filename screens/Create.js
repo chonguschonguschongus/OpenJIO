@@ -53,6 +53,11 @@ const Create = () => {
       return;
     }
   
+    if (title.trim() === "" || description.trim() === "" || no.trim() === "") {
+      alert("Please fill in all the required fields.");
+      return;
+    }
+    
     const eventCollectionRef = collection(db, "Event");
     const currentUser = auth.currentUser;
   
