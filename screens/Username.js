@@ -149,7 +149,6 @@ const styles = {
     height: 56,
     paddingHorizontal: 16,
     backgroundColor: "#f6f7ff",
-    color: "inherit",
     borderRadius: 6,
     marginVertical: 8,
     fontSize: 18,
