@@ -28,7 +28,7 @@ const Edit =  ({ route, navigation }) => {
     // Update the event data in Firestore
     const eventDocRef = doc(db, "Event", event.id);
   
-    if (!title || !description || !no || !fileUploaded) {
+    if (!title || !description || !no ) {
       alert("Please fill in all the required fields and upload an image before updating.");
       return;
     }
